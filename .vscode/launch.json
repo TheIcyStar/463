@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug HW1",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/HW1/hw1",
+      "args": ["100","100","img.ppm"],
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/HW1",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "build-hw1"
+    }
+  ]
+}
