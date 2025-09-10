@@ -1,6 +1,8 @@
 //Name: Alexander Petrov
 //PSU account: aop5448
 
+// Time complexity explanations are in the PDF
+
 #include <iostream>
 #include <climits>
 
@@ -28,10 +30,8 @@ int main(void){
 
 /**
  * Exhastively searches for the best price to sell with a simple nested for loop
- * Time complexity:
- *    n+(n-1)+(n-2)+...+2+1 = (n(n+1)/2) ~= n^2/2
- *      = O(n^2)
  * @param prices Array of prices for each day
+ * @param numPrices length of the price array
  * @return profit
  */
 int stocks_exhaustive(int prices[], int numPrices){
@@ -50,9 +50,8 @@ int stocks_exhaustive(int prices[], int numPrices){
 
 /**
  * Finds the best profit by walking through all prices and picking the lowest and highest available
- * Time complexity:
- *    = O(n)
  * @param prices Array of prices for each day
+ * @param numPrices length of the price array
  * @return profit
  */
 int stocks_greedy(int prices[], int numPrices){
