@@ -14,6 +14,19 @@
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
       "preLaunchTask": "build-hw1"
-    }
+    },
+    {
+      "name": "Debug HW2",
+      "type": "cppdbg",
+      "request": "launch",
+      "program": "${workspaceFolder}/HW2/hw2",
+      "stopAtEntry": false,
+      "cwd": "${workspaceFolder}/HW2",
+      "environment": [],
+      "externalConsole": false,
+      "MIMode": "gdb",
+      "miDebuggerPath": "/usr/bin/gdb",
+      "preLaunchTask": "build-hw2"
+    },
   ]
 }
