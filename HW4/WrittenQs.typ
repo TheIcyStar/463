@@ -26,7 +26,9 @@ Explain the difference between top-down (memoization) and bottom-up (tabulation)
 - Discuss which approach is generally more memory efficient and why.
 
 #answer([
+   Top-down solutions start from the general case and work "downard" to the subproblems. For any overlapping subproblems, memoization provides already computed results so that existing work can be reused. Bottom-up approaches begin from the subproblems and work "upwards" to the original problem.
 
+   For calculating the Fibonacci sequence, a top-down approach
 ])
 
 = Question 2
