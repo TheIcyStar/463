@@ -28,18 +28,79 @@ Explain the difference between top-down (memoization) and bottom-up (tabulation)
 #answer([
    Top-down solutions start from the general case and work "downard" to the subproblems. For any overlapping subproblems, memoization provides already computed results so that existing work can be reused. Bottom-up approaches begin from the subproblems and work "upwards" to the original problem.
 
-   For calculating the Fibonacci sequence, a top-down approach
+   For calculating the Fibonacci sequence, consider Figure 1. An implementation using a top-down approach would begin at the top of the tree and recurse down the left-most branches. After reaching the base cases, all of the memoized solutions would be available as subproblems finish recursing back up the tree.
+
+   #figure(
+    image("Assets/Q1p1.svg", width: 75%),
+    caption: "A tree representing a Fibonacci function. Redundant work is represented by blue nodes. "
+   )
+
+   A bottom-up implementation would start at the left-most base cases (i.e. `Fib(1)` and `Fib(2)`) and work up to `Fib(n)`.
+
+   The Top-down approach would require $O(n)$ space for memoization and the function call stack, while a bottom-up approach can simply keep track of the last two entires in a simple for loop. Thus, the bottom-up approach is more memory efficient.
 ])
 
 = Question 2
-From the uploaded lecture’s discussion of optimal substructure and overlapping subproblems, identify one problem example where these properties are explicitly used (for instance, Matrix Chain Multiplication, Longest Common Subsequence, or Knapsack Problem).
+From the uploaded lecture's discussion of optimal substructure and overlapping subproblems, identify one problem example where these properties are explicitly used (for instance, Matrix Chain Multiplication, Longest Common Subsequence, or Knapsack Problem).
 - Derive the recurrence relation for that problem.
 - Write pseudocode to implement the dynamic programming solution.
 
 #answer([
+  The solution to the matrix chain multiplication problem uses both optimal substructures and overlapping subproblems. Once we find the best way to add parentheses to the multiplication chain, all other problems that build ontop of that initial chain will have the same solution for minimal multiplication cost. The overlapping subproblems come from the fact that there are many ways to split the original chain of matrices to produce the same sub-chains.
 
+  For a matrix chain of length $n$, there are $n-1$ spots to make the cut. Each cut produces two subproblems: the first being a subchain up to the cut at position $k$ and the subchain after the cut. This is then followed by finding the minimum out of the $n-1$ cuts, which is an $O(n)$ operation. Thus, the recurrence relation is:
+
+  $
+    T(n) & = ((T(2)+T(n-3)) + (T(3)+T(n-4)) + ... + (T(k)+T(n-k+1))) + O(n)\
+    & = sum^(n-1)_k ((T(k)+T(n-k+1))) + O(n)
+    &
+  $
+
+  #v(3em)
+  (continued on next page)
+
+  #colbreak()
+
+  Python-like pseudocode:
+  ```py
+  cost_memo = {} # dictionary, tuple (a,b) keys, cost values
+  def Mat_Chain(matrices, startIndex, endIndex):
+    # if we know the cost, return
+    if cost_memo[(startIndex,endIndex)] is not None:
+      return cost_memo[(startIndex,endIndex)]
+
+    # if no more subproblems, calc, memo, and return
+    if startIndex + 1 == endIndex:
+      cost = ( # For two matrices that are MxN and NxP,
+        matrices[startIndex].size.rows * # M
+        matrices[startIndex].size.cols * # N
+        matrices[endIndex].size.rows     # P
+      )
+      cost_memo[(startIndex,endIndex)] = cost
+      return cost
+
+    # get costs of all the cuts
+    sub_costs = []
+    for i in range(startIndex, endIndex): # start..(end-1)
+      cost_left = Mat_Chain(matrices, startIndex, i)
+      cost_right = Mat_Chain(matrices, i+1, endIndex)
+      # left/right_matrix are A_i,k and A_k+1,j where k is the cut
+      cost_LtimesR = (
+        left_matrix.size.rows *
+        left_matrix.size.cols *
+        right_matrix.size.rows
+      )
+      sub_costs.append(cost_left + cost_right + cost_LtimesR)
+
+    # put best found cost in memo and return
+    best = min(sub_costs)
+    cost_memo[(startIndex,endIndex)] = best
+    return best
+
+  ```
 ])
 
+#pagebreak()
 = Question 3
 Consider the 0/1 Knapsack Problem where you are given n items with weights w_i and values v_i, and a knapsack capacity W.
 - Formulate the dynamic programming recurrence.
@@ -48,4 +109,7 @@ Consider the 0/1 Knapsack Problem where you are given n items with weights w_i a
 
 #answer([
 
+
+
+  To improve space usage, only the cells where the value changes while reading from left to right can be saved. For example, for a row of length of 5 with the following values: `[0,3,3,3,5]`, we can simply store the value `3` with its position (in this case, `1`), and assume all of the cells after that position are also 3's, up to the next stored value of 5.
 ])
